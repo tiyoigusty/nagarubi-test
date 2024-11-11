@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,10 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import image from "../assets/treasure.png";
+import axios from "axios";
 
 interface Item {
-  id: number;
+  id?: string;
   name: string;
   description: string;
   price: number;
@@ -24,25 +25,88 @@ export function ListItem() {
   const [newItemName, setNewItemName] = useState<string>("");
   const [newItemDescription, setNewItemDescription] = useState<string>("");
   const [newItemPrice, setNewItemPrice] = useState<number>(0);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState<boolean>(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
+  const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
 
-  const handleAddItem = () => {
+  // Fetch items from JSON Server
+  const fetchItems = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: "http://localhost:5000/items",
+      });
+      const data = await response.data;
+      // console.log("ini items", data);
+
+      setItems(data);
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  };
+
+  console.log("items dari state", items);
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  // Add new item to JSON Server
+  const handleAddItem = async () => {
     if (newItemName.trim() === "") return;
 
     const newItem: Item = {
-      id: Date.now(),
       name: newItemName,
       description: newItemDescription,
       price: newItemPrice,
       imageUrl: image,
     };
-    setItems([...items, newItem]);
-    setNewItemName("");
-    setNewItemDescription("");
-    setNewItemPrice(0);
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:5000/items",
+        data: newItem,
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (response.data) {
+        setItems([...items, newItem]);
+        setNewItemName("");
+        setNewItemDescription("");
+        setNewItemPrice(0);
+        setIsAddDialogOpen(false); // Close the dialog after adding item
+      } else {
+        console.error("Failed to add item");
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   };
 
-  const handleDeleteItem = (id: number) => {
-    setItems(items.filter((item) => item.id !== id));
+  // Confirm delete item
+  const confirmDeleteItem = (item: Item) => {
+    setItemToDelete(item);
+    setIsDeleteDialogOpen(true);
+  };
+
+  // Delete item from JSON Server
+  const handleDeleteItem = async () => {
+    if (!itemToDelete) return;
+
+    console.log(itemToDelete.id);
+
+    try {
+      await axios({
+        method: "delete",
+        url: `http://localhost:5000/items/${itemToDelete.id}`,
+      });
+      setItems(items.filter((item) => item.id !== itemToDelete.id));
+      setIsDeleteDialogOpen(false);
+      setItemToDelete(null);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
   return (
@@ -50,9 +114,12 @@ export function ListItem() {
       <div className="flex justify-between items-center p-3">
         <h1 className="text-3xl font-bold text-neon mb-6">User Dashboard</h1>
 
-        <Dialog>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="px-4 py-2 bg-neon text-black font-bold rounded hover:bg-green-400 transition">
+            <Button
+              onClick={() => setIsAddDialogOpen(true)}
+              className="px-4 py-2 bg-neon text-black font-bold rounded hover:bg-green-400 transition"
+            >
               Add Item
             </Button>
           </DialogTrigger>
@@ -128,7 +195,7 @@ export function ListItem() {
               </div>
             </div>
             <button
-              onClick={() => handleDeleteItem(item.id)}
+              onClick={() => confirmDeleteItem(item)}
               className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-700 transition"
             >
               Delete
@@ -136,6 +203,31 @@ export function ListItem() {
           </li>
         ))}
       </ul>
+
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="bg-slate-950 shadow-lg shadow-red-500">
+          <DialogHeader>
+            <DialogTitle className="text-white">Confirm Delete</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this item?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              onClick={() => setIsDeleteDialogOpen(false)}
+              className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 transition"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleDeleteItem}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition"
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
