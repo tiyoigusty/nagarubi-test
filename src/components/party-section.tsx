@@ -3,7 +3,7 @@ import { MyButton } from "./button";
 
 export function PartySection() {
   return (
-    <div className="bg-gray-800 px-4 py-8 rounded-lg shadow-md text-white">
+    <div className="bg-gray-800 bg-opacity-60 px-4 py-8 rounded-lg shadow-md text-white">
       <h3 className="font-bold mb-2 flex items-center justify-center gap-3 text-xl">
         <FaPeopleLine className="text-4xl" />
         PARTY

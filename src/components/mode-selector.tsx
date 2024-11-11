@@ -6,7 +6,7 @@ import { IoInfiniteSharp } from "react-icons/io5";
 
 export function ModeSelector() {
   return (
-    <div className="bg-gray-800 p-4 rounded-lg shadow-md text-white">
+    <div className="bg-gray-800 bg-opacity-60 p-4 rounded-lg shadow-md text-white">
       <h3 className="font-bold mb-4">Modes</h3>
       <div className="grid grid-cols-4 gap-2">
         <button className="bg-gray-700 p-2 rounded flex flex-col items-center font-bold hover:shadow-md hover:shadow-neon hover:bg-gray-500">

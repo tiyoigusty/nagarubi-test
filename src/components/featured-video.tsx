@@ -1,6 +1,6 @@
 export function FeaturedVideo() {
   return (
-    <div className="bg-gray-800 p-4 rounded-lg shadow-md text-white">
+    <div className="bg-gray-800 bg-opacity-60 p-4 rounded-lg shadow-md text-white">
       <h3 className="font-bold mb-4">Featured Video</h3>
       <div className="rounded-lg overflow-hidden w-full">
         <iframe

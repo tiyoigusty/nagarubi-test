@@ -1,3 +1,5 @@
+// src/pages/Dashboard.tsx
+import ParticleBackground from "@/components/particles-background";
 import { TypeAnimation } from "react-type-animation";
 import { MyButton } from "../components/button";
 import { FeaturedVideo } from "../components/featured-video";
@@ -9,8 +11,11 @@ import { UserProfile } from "../components/user-profile";
 
 function Dashboard() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black p-4 text-white">
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-4 lg:grid-cols-5">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white relative p-3">
+      {/* Particle background */}
+      <ParticleBackground />
+
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-4 lg:grid-cols-5 z-10 relative">
         <div className="space-y-4">
           <UserProfile />
           <PartySection />
@@ -20,7 +25,7 @@ function Dashboard() {
           </button>
         </div>
 
-        <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-gray-800 rounded-lg p-4">
+        <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-gray-800 bg-opacity-30 rounded-lg p-4">
           <ListItem />
         </div>
 
@@ -33,7 +38,7 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-2 flex justify-center">
+      <div className="mt-2 flex justify-center z-10 relative">
         <TypeAnimation
           sequence={["Design By TiyoIgusty", 1000, "", 1000]}
           wrapper="span"
