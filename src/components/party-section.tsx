@@ -1,5 +1,5 @@
 import { FaPeopleLine } from "react-icons/fa6";
-import { Button } from "./button";
+import { MyButton } from "./button";
 
 export function PartySection() {
   return (
@@ -10,8 +10,8 @@ export function PartySection() {
       </h3>
       <p className="text-sm mb-4 flex justify-center">Play with your friends</p>
       <div className="flex justify-center space-x-4">
-        <Button label="CREATE" color="green" width="default" />
-        <Button label="JOIN" color="orange" width="default" />
+        <MyButton label="CREATE" color="green" width="default" />
+        <MyButton label="JOIN" color="orange" width="default" />
       </div>
     </div>
   );

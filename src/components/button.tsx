@@ -2,9 +2,10 @@ interface ButtonProps {
   label: string;
   color: "green" | "orange";
   width: "full" | "default";
+  onClick?: () => void;
 }
 
-export function Button({ label, color, width }: ButtonProps) {
+export function MyButton({ label, color, width }: ButtonProps) {
   const baseStyles =
     "px-6 py-3 text-white font-bold rounded-lg shadow-md hover:opacity-90 transition-all";
 

@@ -1,5 +1,5 @@
 import { TypeAnimation } from "react-type-animation";
-import { Button } from "../components/button";
+import { MyButton } from "../components/button";
 import { FeaturedVideo } from "../components/featured-video";
 import { ListItem } from "../components/list-items";
 import { ModeSelector } from "../components/mode-selector";
@@ -14,7 +14,7 @@ function Dashboard() {
         <div className="space-y-4">
           <UserProfile />
           <PartySection />
-          <Button label="PLAY" color="green" width="full" />
+          <MyButton label="PLAY" color="green" width="full" />
           <button className="w-full border-4 border-gray-500 rounded-lg p-2 text-gray-500 font-bold hover:bg-slate-400 hover:text-white">
             SETTING
           </button>
