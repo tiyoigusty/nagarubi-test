@@ -1,11 +1,34 @@
 {
   "users": [
     {
-      "id": "7983",
-      "username": "test",
-      "email": "test@example.com",
-      "password": "1234"
+      "id": "cc8a",
+      "username": "tiyoigusty",
+      "email": "tiyooigustyy@gmail.com",
+      "password": "12341234",
+      "confirmPassword": "12341234"
     }
   ],
-  "items": []
+  "items": [
+    {
+      "id": "bec8",
+      "name": "Pedang",
+      "description": "Dapat digunakan untuk menyerang dalam jarak dekat dengan kerusakan menengah",
+      "price": 100,
+      "imageUrl": "/src/assets/treasure.png"
+    },
+    {
+      "id": "c154",
+      "name": "Tameng",
+      "description": "Dapat digunakan untuk melindungi diri dari serangan",
+      "price": 350,
+      "imageUrl": "/src/assets/treasure.png"
+    },
+    {
+      "id": "1980",
+      "name": "Pistol",
+      "description": "Dapat digunakan untuk menyerang dari jarak jauh dengan kerusakan menengah",
+      "price": 150,
+      "imageUrl": "/src/assets/treasure.png"
+    }
+  ]
 }
