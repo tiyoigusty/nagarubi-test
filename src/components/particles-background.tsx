@@ -1,17 +1,16 @@
-// src/components/ParticleBackground.tsx
 import { useCallback, useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import type { Container, Engine } from "@tsparticles/engine";
-import { loadSlim } from "@tsparticles/slim"; // Menggunakan loadSlim
+import { loadSlim } from "@tsparticles/slim";
 
 const ParticleBackground = () => {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
     initParticlesEngine(async (engine: Engine) => {
-      await loadSlim(engine); // Memuat paket tsParticles slim
+      await loadSlim(engine);
     }).then(() => {
-      setInit(true); // Particles siap, setInit jadi true
+      setInit(true);
     });
   }, []);
 

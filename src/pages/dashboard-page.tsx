@@ -1,4 +1,3 @@
-// src/pages/Dashboard.tsx
 import ParticleBackground from "@/components/particles-background";
 import { TypeAnimation } from "react-type-animation";
 import { MyButton } from "../components/button";
@@ -12,7 +11,6 @@ import { UserProfile } from "../components/user-profile";
 function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white relative p-3">
-      {/* Particle background */}
       <ParticleBackground />
 
       <div className="grid gap-4 grid-cols-1 md:grid-cols-4 lg:grid-cols-5 z-10 relative">
