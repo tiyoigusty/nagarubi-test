@@ -1,19 +1,27 @@
 import {
   FaCoins,
+  FaEdit,
   FaGift,
   FaShopify,
-  FaTrophy,
   FaSignOutAlt,
-  FaEdit,
+  FaTrophy,
 } from "react-icons/fa";
 import { IoDiamond } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 export function UserProfile() {
+  const navigate = useNavigate();
+
+  async function logout() {
+    localStorage.removeItem("user");
+    navigate("/login");
+  }
+
   return (
     <div className="bg-gray-900 bg-opacity-60 p-6 rounded-2xl shadow-md shadow-neon w-full text-white relative">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold">SuperMario</h2>
-        <button className="text-gray-400 hover:text-red-500">
+        <h2 className="text-lg font-bold">Super Mario</h2>
+        <button onClick={logout} className="text-gray-400 hover:text-red-500">
           <FaSignOutAlt />
         </button>
       </div>
