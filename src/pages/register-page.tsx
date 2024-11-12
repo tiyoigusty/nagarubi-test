@@ -1,42 +1,54 @@
+// src/pages/Register.tsx
 import ParticleBackground from "@/components/particles-background";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { RegisterFormData, registerSchema } from "@/validation/register-schema";
+import { toastOptions } from "@/lib/toast-option";
 
 function Register() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    trigger,
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
+  });
 
   const navigate = useNavigate();
 
-  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
+  const showErrorMessages = async () => {
+    const fields = ["username", "email", "password", "confirmPassword"];
+    for (const field of fields) {
+      await trigger(field as keyof RegisterFormData);
+      const error = errors[field as keyof RegisterFormData];
+      if (error) {
+        toast.error(error.message, toastOptions);
+        break;
+      }
     }
+  };
 
-    const response = await fetch("http://localhost:5000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, email, password }),
-    });
-
-    if (response.ok) {
-      alert("Registration successful");
+  const handleRegister = async (data: RegisterFormData) => {
+    try {
+      await axios.post("http://localhost:5000/users", data);
+      toast.success("Registration successful", toastOptions);
       navigate("/login");
-    } else {
-      alert("Registration failed");
+    } catch (error) {
+      if (error) {
+        toast.error("Registration failed", toastOptions);
+      }
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
       <ParticleBackground />
+      <ToastContainer />
 
       <div className="bg-gray-900 bg-opacity-80 rounded-lg shadow-lg p-8 max-w-md w-full text-center z-10">
         <h1 className="text-4xl font-bold text-neon mb-4">Join the Game</h1>
@@ -44,46 +56,43 @@ function Register() {
           Create an account to start your adventure
         </p>
 
-        <form onSubmit={handleRegister}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit(handleRegister)}>
+          <div className="mb-4 relative">
             <input
               type="text"
               placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              {...register("username")}
               className="w-full px-4 py-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-neon focus:bg-gray-800 transition"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <input
               type="email"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register("email")}
               className="w-full px-4 py-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-neon focus:bg-gray-800 transition"
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <input
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password")}
               className="w-full px-4 py-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-neon focus:bg-gray-800 transition"
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <input
               type="password"
               placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              {...register("confirmPassword")}
               className="w-full px-4 py-2 rounded bg-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-neon focus:bg-gray-800 transition"
             />
           </div>
 
           <button
             type="submit"
+            onClick={showErrorMessages}
             className="w-full bg-neon text-black font-bold py-2 rounded hover:bg-green-400 transition"
           >
             Register
