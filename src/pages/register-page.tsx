@@ -1,49 +1,11 @@
-// src/pages/Register.tsx
 import ParticleBackground from "@/components/particles-background";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { RegisterFormData, registerSchema } from "@/validation/register-schema";
-import { toastOptions } from "@/lib/toast-option";
+import { useRegister } from "@/hooks/use-register";
 
 function Register() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    trigger,
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  const navigate = useNavigate();
-
-  const showErrorMessages = async () => {
-    const fields = ["username", "email", "password", "confirmPassword"];
-    for (const field of fields) {
-      await trigger(field as keyof RegisterFormData);
-      const error = errors[field as keyof RegisterFormData];
-      if (error) {
-        toast.error(error.message, toastOptions);
-        break;
-      }
-    }
-  };
-
-  const handleRegister = async (data: RegisterFormData) => {
-    try {
-      await axios.post("http://localhost:5000/users", data);
-      toast.success("Registration successful", toastOptions);
-      navigate("/login");
-    } catch (error) {
-      if (error) {
-        toast.error("Registration failed", toastOptions);
-      }
-    }
-  };
+  const { register, handleSubmit, handleRegister, showErrorMessages } =
+    useRegister();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 flex items-center justify-center">
