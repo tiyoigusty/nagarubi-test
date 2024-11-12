@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 export function UserProfile() {
   const navigate = useNavigate();
 
+  const username = localStorage.getItem("user");
+
   async function logout() {
     localStorage.removeItem("user");
     navigate("/login");
@@ -20,7 +22,7 @@ export function UserProfile() {
   return (
     <div className="bg-gray-900 bg-opacity-60 p-6 rounded-2xl shadow-md shadow-neon w-full text-white relative">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold">Super Mario</h2>
+        <h2 className="text-lg font-bold">{username}</h2>
         <button onClick={logout} className="text-gray-400 hover:text-red-500">
           <FaSignOutAlt />
         </button>
